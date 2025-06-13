@@ -1,0 +1,48 @@
+---
+title: "Otro post interesante"
+date: "2025-06-12"
+summary: "Segundo artículo con más detalles."
+---
+
+## Segundo artículo
+
+Aquí habrá más texto **formateado** y quizá código.
+
+```js
+console.log('Hola blog');
+---
+
+## 6 Página de listado `/blog`
+
+```bash
+mkdir -p src/app/blog
+cat > src/app/blog/page.tsx <<'EOF'
+import { allPosts } from 'contentlayer/generated';
+import Link from 'next/link';
+
+export const metadata = {
+  title: 'Blog | Mi Sitio',
+};
+
+export default function BlogList() {
+  const posts = allPosts.sort((a, b) => b.date.localeCompare(a.date));
+
+  return (
+    <section className="mx-auto max-w-3xl space-y-8 py-24 px-4">
+      <h1 className="text-4xl font-bold">Blog</h1>
+      <ul className="space-y-6">
+        {posts.map((post) => (
+          <li key={post.slug} className="rounded-xl2 border p-6">
+            <h2 className="text-2xl font-semibold">
+              <Link href={`/blog/${post.slug}`} className="text-brand hover:underline">
+                {post.title}
+              </Link>
+            </h2>
+            <p className="text-sm text-gray-500">{post.date}</p>
+            <p className="mt-2">{post.summary}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
